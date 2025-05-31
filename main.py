@@ -37,32 +37,12 @@ def show_tasks():
         status = "✓" if task['completed'] else "✗"
         print(f"{index}. {task['title']} [{status}] - {task['created_at']}")
 
-def mark_task_completed():
-    tasks = load_tasks()
-    if not tasks:
-        print("\nهیچ تسکی برای تیک زدن وجود ندارد.")
-        return
-    show_tasks()
-    try:
-        choice = int(input("\nشماره تسکی که انجام شده را وارد کنید: "))
-        if 1 <= choice <= len(tasks):
-            if tasks[choice - 1]['completed']:
-                print("\nاین تسک قبلاً انجام شده است.")
-            else:
-                tasks[choice - 1]['completed'] = True
-                save_tasks(tasks)
-                print(f"\nتسک '{tasks[choice - 1]['title']}' با موفقیت تیک زده شد.")
-        else:
-            print(f"\nشماره وارد شده نامعتبر است. لطفاً عددی بین 1 و {len(tasks)} وارد کنید.")
-    except ValueError:
-        print("\nخطا: لطفاً یک عدد صحیح وارد کنید.")
-
 def filter_tasks():
     tasks = load_tasks()
     if not tasks:
         print("\nهیچ تسکی وجود ندارد.")
         return
-    
+
     while True:
         print("\n1. نمایش همه تسک‌ها")
         print("2. نمایش تسک‌های انجام نشده")
@@ -85,16 +65,26 @@ def filter_tasks():
                 elif choice == '4':
                     return
 
+def mark_task_completed():
+    tasks = load_tasks()
+    if not tasks:
+        print("\nهیچ تسکی برای تیک زدن وجود ندارد.")
+        return
+    show_tasks()
+    try:
+        choice = int(input("\nشماره تسکی که انجام شده را وارد کنید: "))
+        if 1 <= choice <= len(tasks):
+            if tasks[choice - 1]['completed']:
+                print("\nاین تسک قبلاً انجام شده است.")
+            else:
+                tasks[choice - 1]['completed'] = True
+                save_tasks(tasks)
+                print(f"\nتسک '{tasks[choice - 1]['title']}' با موفقیت تیک زده شد.")
+        else:
+            print(f"\nشماره وارد شده نامعتبر است. لطفاً عددی بین 1 و {len(tasks)} وارد کنید.")
+    except ValueError:
+        print("\nخطا: لطفاً یک عدد صحیح وارد کنید.")
 
-def show_menu():
-    print("\nToDoCraft")
-    print("منوی اصلی")
-    print("1. افزودن تسک جدید")
-    print("2. نمایش تسک‌ها")
-    print("3. نمایش تسک ها با امکان فیلتر")
-    print("4. حذف تسک")
-    print("5. تیک زدن تسک (انجام شده)")
-    print("6. خروج")
 
 def delete_task():
     tasks = load_tasks()
@@ -113,6 +103,16 @@ def delete_task():
     except ValueError:
         print("\nخطا: لطفاً یک عدد صحیح وارد کنید.")
 
+def show_menu():
+    print("\nToDoCraft")
+    print("منوی اصلی")
+    print("1. افزودن تسک جدید")
+    print("2. نمایش تسک‌ها")
+    print("3. نمایش تسک ها با امکان فیلتر")
+    print("4. تیک زدن تسک (انجام شده)")    
+    print("5. حذف تسک")
+    print("6. خروج")
+
 def main():
     while True:
         show_menu()
@@ -129,10 +129,10 @@ def main():
             filter_tasks()
 
         elif choice == '4':
-            delete_task()
+            mark_task_completed()
 
         elif choice == '5':
-            mark_task_completed()
+            delete_task()
 
         elif choice == '6':
             print("\nاز برنامه خارج شدید. بدرود\n")
