@@ -31,13 +31,35 @@ def show_tasks():
         status = "✓" if task['completed'] else "✗"
         print(f"{index}. {task['title']} [{status}]")
 
+def mark_task_completed():
+    tasks = load_tasks()
+    if not tasks:
+        print("\nهیچ تسکی برای تیک زدن وجود ندارد.")
+        return
+    show_tasks()
+    try:
+        choice = int(input("\nشماره تسکی که انجام شده را وارد کنید: "))
+        if 1 <= choice <= len(tasks):
+            if tasks[choice - 1]['completed']:
+                print("\nاین تسک قبلاً انجام شده است.")
+            else:
+                tasks[choice - 1]['completed'] = True
+                save_tasks(tasks)
+                print(f"\nتسک '{tasks[choice - 1]['title']}' با موفقیت تیک زده شد.")
+        else:
+            print(f"\nشماره وارد شده نامعتبر است. لطفاً عددی بین 1 و {len(tasks)} وارد کنید.")
+    except ValueError:
+        print("\nخطا: لطفاً یک عدد صحیح وارد کنید.")
+        
+
 def show_menu():
     print("\nToDoCraft")
     print("منوی اصلی")
     print("1. افزودن تسک جدید")
     print("2. نمایش تسک‌ها")
     print("3. حذف تسک")
-    print("4. خروج")
+    print("4. تیک زدن تسک (انجام شده)")
+    print("5. خروج")
 
 def delete_task():
     tasks = load_tasks()
@@ -52,14 +74,14 @@ def delete_task():
             save_tasks(tasks)
             print(f"\nتسک '{removed_task['title']}' با موفقیت حذف شد.")
         else:
-            print(f"\nشماره وارد شده نامعتبر است. لطفاً عددی بین 1 و {format(len(tasks))} وارد کنید.")
+            print(f"\nشماره وارد شده نامعتبر است. لطفاً عددی بین 1 و {len(tasks)} وارد کنید.")
     except ValueError:
         print("\nخطا: لطفاً یک عدد صحیح وارد کنید.")
 
 def main():
     while True:
         show_menu()
-        choice = input("لطفاً گزینه مورد نظر را وارد کنید (1-4): ")
+        choice = input("لطفاً گزینه مورد نظر را وارد کنید (1-5): ")
 
         if choice == '1':
             print("\nافزودن تسک جدید")
@@ -69,9 +91,12 @@ def main():
 
         elif choice == '3':
             delete_task()
-
+        
         elif choice == '4':
-            print("\nخروج از برنامه\n")
+            mark_task_completed()
+
+        elif choice == '5':
+            print("\nاز برنامه خارج شدید. بدرود\n")
             break
         else:
             print("\nگزینه نامعتبر. لطفاً عددی از 1 تا 4 وارد کنید.")
