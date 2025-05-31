@@ -25,7 +25,7 @@ def show_tasks():
     if not tasks:
         print("\nهیچ تسکی وجود ندارد.")
         return
-    
+
     print("\nلیست تسک‌ها:")
     for index, task in enumerate(tasks, start=1):
         status = "✓" if task['completed'] else "✗"
@@ -39,20 +39,37 @@ def show_menu():
     print("3. حذف تسک")
     print("4. خروج")
 
+def delete_task():
+    tasks = load_tasks()
+    if not tasks:
+        print("\nهیچ تسکی برای حذف وجود ندارد.")
+        return
+    show_tasks()
+    try:
+        choice = int(input("\nشماره تسکی که می‌خواهید حذف کنید را وارد کنید: "))
+        if 1 <= choice <= len(tasks):
+            removed_task = tasks.pop(choice - 1)
+            save_tasks(tasks)
+            print(f"\nتسک '{removed_task['title']}' با موفقیت حذف شد.")
+        else:
+            print(f"\nشماره وارد شده نامعتبر است. لطفاً عددی بین 1 و {format(len(tasks))} وارد کنید.")
+    except ValueError:
+        print("\nخطا: لطفاً یک عدد صحیح وارد کنید.")
+
 def main():
     while True:
         show_menu()
         choice = input("لطفاً گزینه مورد نظر را وارد کنید (1-4): ")
-        
+
         if choice == '1':
             print("\nافزودن تسک جدید")
             add_task()
         elif choice == '2':
             show_tasks()
-                        
+
         elif choice == '3':
-            print("\nحذف تسک")
-            
+            delete_task()
+
         elif choice == '4':
             print("\nخروج از برنامه\n")
             break
