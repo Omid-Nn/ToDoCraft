@@ -2,5 +2,13 @@
     {
         "title": "یادگیری پایتون",
         "completed": false
+    },
+    {
+        "title": "تسک آزمایشی 1",
+        "completed": false
+    },
+    {
+        "title": "تسک آزمایشی 2",
+        "completed": false
     }
 ]
