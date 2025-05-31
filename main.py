@@ -26,6 +26,31 @@ def add_task():
     save_tasks(task)
     print(f"\nتسک '{title}' با موفقیت اضافه شد.")
 
+def edit_task():
+    tasks = load_tasks()
+    if not tasks:
+        print("\nهیچ تسکی برای ویرایش وجود ندارد.")
+        return
+    
+    show_tasks()
+    while True:
+        try:
+            choice = int(input("\nشماره تسکی که می‌خواهید ویرایش کنید را وارد کنید: "))
+            if 1 <= choice <= len(tasks):
+                current_title = tasks[choice - 1]['title']
+                new_title = input(f"عنوان جدید برای «{current_title}» رو وارد کنید: ").strip()
+                if new_title:
+                    tasks[choice - 1]['title'] = new_title
+                    save_tasks(tasks)
+                    print(f"\nتسک با موفقیت ویرایش شد. عنوان جدید: {new_title}")
+                    break
+                else:
+                    print("ویرایش لغو شد. عنوان جدید نباید خالی باشد.")
+            else:
+                print(f"\nگزینه نامعتبر. لطفاً عددی بین 1 و {len(tasks)} وارد کنید.")
+        except ValueError:
+            print("\nخطا: لطفاً یک عدد صحیح وارد کنید.")
+
 def show_tasks():
     tasks = load_tasks()
     if not tasks:
@@ -107,38 +132,42 @@ def show_menu():
     print("\nToDoCraft")
     print("منوی اصلی")
     print("1. افزودن تسک جدید")
-    print("2. نمایش تسک‌ها")
-    print("3. نمایش تسک ها با امکان فیلتر")
-    print("4. تیک زدن تسک (انجام شده)")    
-    print("5. حذف تسک")
-    print("6. خروج")
+    print("2. ویرایش تسک")
+    print("3. نمایش تسک‌ها")
+    print("4. نمایش تسک ها با امکان فیلتر")
+    print("5. تیک زدن تسک (انجام شده)")    
+    print("6. حذف تسک")
+    print("7. خروج")
 
 def main():
     while True:
         show_menu()
-        choice = input("لطفاً گزینه مورد نظر را وارد کنید (1-6): ")
+        choice = input("لطفاً گزینه مورد نظر را وارد کنید (1-7): ")
 
         if choice == '1':
             print("\nافزودن تسک جدید")
             add_task()
 
         elif choice == '2':
-            show_tasks()
+            edit_task()
 
         elif choice == '3':
-            filter_tasks()
+            show_tasks()
 
         elif choice == '4':
-            mark_task_completed()
+            filter_tasks()
 
         elif choice == '5':
-            delete_task()
+            mark_task_completed()
 
         elif choice == '6':
+            delete_task()
+
+        elif choice == '7':
             print("\nاز برنامه خارج شدید. بدرود\n")
             break
         else:
-            print("\nگزینه نامعتبر. لطفاً عددی از 1 تا 6 وارد کنید.")
+            print("\nگزینه نامعتبر. لطفاً عددی از 1 تا 7 وارد کنید.")
 
 if __name__ == "__main__":
     main()
