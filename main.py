@@ -20,6 +20,16 @@ def add_task():
     save_tasks(task)
     print(f"\nتسک '{title}' با موفقیت اضافه شد.")
 
+def show_tasks():
+    tasks = load_tasks()
+    if not tasks:
+        print("\nهیچ تسکی وجود ندارد.")
+        return
+    
+    print("\nلیست تسک‌ها:")
+    for index, task in enumerate(tasks, start=1):
+        status = "✓" if task['completed'] else "✗"
+        print(f"{index}. {task['title']} [{status}]")
 
 def show_menu():
     print("\nToDoCraft")
@@ -38,8 +48,8 @@ def main():
             print("\nافزودن تسک جدید")
             add_task()
         elif choice == '2':
-            print("\nنمایش تسک‌ها")
-            
+            show_tasks()
+                        
         elif choice == '3':
             print("\nحذف تسک")
             
