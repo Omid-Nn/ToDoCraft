@@ -1,3 +1,8 @@
+"""
+این فایل شامل حلقه اصلی اجرای برنامه، نمایش منو و مدیریت ورودی کاربر است.
+با استفاده از ماژول‌های دیگر عملیات مربوط به تسک‌ها را اجرا می‌کند.
+"""
+
 from tasks.display import show_tasks, filter_tasks
 from tasks.operations import (
     add_task,
@@ -6,6 +11,9 @@ from tasks.operations import (
     mark_task_completed
 )
 def show_menu():
+    """
+    چاپ منوی اصلی در ترمینال برای نمایش گزینه‌های مدیریت تسک‌ها.
+    """
     print("\nToDoCraft")
     print("منوی اصلی")
     print("1. افزودن تسک جدید")
@@ -17,6 +25,10 @@ def show_menu():
     print("7. خروج")
 
 def main():
+    """
+    حلقه اصلی برنامه برای دریافت ورودی کاربر و اجرای عملیات انتخاب‌شده.
+    در صورت وارد کردن عدد ۷، برنامه خاتمه می‌یابد.
+    """
     while True:
         show_menu()
         choice = input("لطفاً گزینه مورد نظر را وارد کنید (1-7): ")
