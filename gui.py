@@ -46,6 +46,10 @@ def open_task_list_window():
     tree.column("created_at", width=100, anchor="center")
     tree.pack(expand=True, fill='both', padx=10, pady=10)
 
+    vsb = ttk.Scrollbar(tree, orient="vertical", command=tree.yview)
+    vsb.pack(side='right', fill='y')
+    tree.configure(yscrollcommand=vsb.set)
+
     def clear_selection(event):
         if not tree.identify_row(event.y):
             tree.selection_remove(tree.selection())
