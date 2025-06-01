@@ -44,54 +44,63 @@ def open_task_list_window():
     tree.column("title", width=250, anchor="center")
     tree.column("status", width=50, anchor="center")
     tree.column("created_at", width=100, anchor="center")
-
-    for task in tasks:
-        status = "✅" if task['completed'] else "⏳"
-        tree.insert("", "end", values=(task['created_at'], status, task['title']))
-
     tree.pack(expand=True, fill='both', padx=10, pady=10)
+
+    def clear_selection(event):
+        if not tree.identify_row(event.y):
+            tree.selection_remove(tree.selection())
+
+    tree.bind("<Button-1>", clear_selection, add="+")
+
+    def refresh_tree():
+        tasks[:] = load_tasks()
+        tree.delete(*tree.get_children())
+        for task in tasks:
+            status = "✅" if task['completed'] else "⏳"
+            tree.insert("", "end", values=(task['created_at'], status, task['title']))
+
+    refresh_tree()
 
     button_frame = ttk.Frame(list_win)
     button_frame.pack(pady=10)
 
-    def delete_selected_task():
+    def get_selected_index():
         selected = tree.selection()
-        if selected:
-            index = tree.index(selected[0])
-            tasks.pop(index)
-            save_tasks(tasks)
-            list_win.destroy()
-            open_task_list_window()
+        return tree.index(selected[0]) if selected else None
+
+    def delete_selected_task():
+        index = get_selected_index()
+        if index is not None:
+            if messagebox.askyesno("تایید حذف", "آیا از حذف تسک اطمینان دارید؟", parent=list_win):
+                tasks.pop(index)
+                save_tasks(tasks)
+                refresh_tree()
         else:
-            tk.messagebox.showwarning("هشدار", "لطفاً یک تسک را انتخاب کنید.")
+            tk.messagebox.showwarning("هشدار", "لطفاً یک تسک انتخاب کنید.", parent=list_win)
 
     def complete_selected_task():
-        selected = tree.selection()
-        if selected:
-            index = tree.index(selected[0])
+        index = get_selected_index()
+        if index is not None:
             if not tasks[index]['completed']:
                 tasks[index]['completed'] = True
                 save_tasks(tasks)
-                list_win.destroy()
-                open_task_list_window()
+                refresh_tree()
             else:
-                tk.messagebox.showinfo("اطلاع", "این تسک قبلاً انجام شده است.")
+                tk.messagebox.showinfo("اطلاع", "این تسک قبلاً انجام شده است.", parent=list_win)
         else:
-            tk.messagebox.showwarning("هشدار", "لطفاً یک تسک را انتخاب کنید.")
+            tk.messagebox.showwarning("هشدار", "لطفاً یک تسک انتخاب کنید.", parent=list_win)
 
     def uncomplete_selected_task():
-        selected = tree.selection()
-        if selected:
-            index = tree.index(selected[0])
+        index = get_selected_index()
+        if index is not None:
             if tasks[index]['completed']:
                 tasks[index]['completed'] = False
                 save_tasks(tasks)
-                list_win.destroy()
-                open_task_list_window()
+                refresh_tree()
             else:
-                tk.messagebox.showinfo("اطلاع", "این تسک هنوز انجام نشده است.")
+                tk.messagebox.showinfo("اطلاع", "این تسک هنوز انجام نشده است.", parent=list_win)
         else:
-            tk.messagebox.showwarning("هشدار", "لطفاً یک تسک را انتخاب کنید.")
+            tk.messagebox.showwarning("هشدار", "لطفاً یک تسک انتخاب کنید.", parent=list_win)
 
     ttk.Button(button_frame, text="حذف تسک", command=delete_selected_task).grid(row=0, column=0, padx=10)
     ttk.Button(button_frame, text="تیک زدن تسک", command=complete_selected_task).grid(row=0, column=1, padx=10)
