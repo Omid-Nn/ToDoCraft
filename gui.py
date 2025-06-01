@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
 from tasks.storage import load_tasks, save_tasks
 from datetime import datetime
 
@@ -34,23 +34,68 @@ def open_task_list_window():
     list_win = tk.Toplevel()
     list_win.title("لیست تسک‌ها")
     list_win.geometry("600x500")
-    
+
     columns = ("created_at", "status", "title")
     tree = ttk.Treeview(list_win, columns=columns, show='headings')
     tree.heading("title", text="عنوان تسک")
     tree.heading("status", text="وضعیت")
     tree.heading("created_at", text="تاریخ ایجاد")
-    
+
     tree.column("title", width=250, anchor="center")
     tree.column("status", width=50, anchor="center")
     tree.column("created_at", width=100, anchor="center")
-    
+
     for task in tasks:
         status = "✅" if task['completed'] else "⏳"
         tree.insert("", "end", values=(task['created_at'], status, task['title']))
-    
+
     tree.pack(expand=True, fill='both', padx=10, pady=10)
 
+    button_frame = ttk.Frame(list_win)
+    button_frame.pack(pady=10)
+
+    def delete_selected_task():
+        selected = tree.selection()
+        if selected:
+            index = tree.index(selected[0])
+            tasks.pop(index)
+            save_tasks(tasks)
+            list_win.destroy()
+            open_task_list_window()
+        else:
+            tk.messagebox.showwarning("هشدار", "لطفاً یک تسک را انتخاب کنید.")
+
+    def complete_selected_task():
+        selected = tree.selection()
+        if selected:
+            index = tree.index(selected[0])
+            if not tasks[index]['completed']:
+                tasks[index]['completed'] = True
+                save_tasks(tasks)
+                list_win.destroy()
+                open_task_list_window()
+            else:
+                tk.messagebox.showinfo("اطلاع", "این تسک قبلاً انجام شده است.")
+        else:
+            tk.messagebox.showwarning("هشدار", "لطفاً یک تسک را انتخاب کنید.")
+
+    def uncomplete_selected_task():
+        selected = tree.selection()
+        if selected:
+            index = tree.index(selected[0])
+            if tasks[index]['completed']:
+                tasks[index]['completed'] = False
+                save_tasks(tasks)
+                list_win.destroy()
+                open_task_list_window()
+            else:
+                tk.messagebox.showinfo("اطلاع", "این تسک هنوز انجام نشده است.")
+        else:
+            tk.messagebox.showwarning("هشدار", "لطفاً یک تسک را انتخاب کنید.")
+
+    ttk.Button(button_frame, text="حذف تسک", command=delete_selected_task).grid(row=0, column=0, padx=10)
+    ttk.Button(button_frame, text="تیک زدن تسک", command=complete_selected_task).grid(row=0, column=1, padx=10)
+    ttk.Button(button_frame, text="بازنشانی تسک", command=uncomplete_selected_task).grid(row=0, column=2, padx=10)
 
 def main():
     root = tk.Tk()
