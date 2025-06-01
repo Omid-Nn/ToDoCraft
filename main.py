@@ -2,6 +2,7 @@
 این فایل شامل حلقه اصلی اجرای برنامه، نمایش منو و مدیریت ورودی کاربر است.
 با استفاده از ماژول‌های دیگر عملیات مربوط به تسک‌ها را اجرا می‌کند.
 """
+__version__ = "1.0.0"
 
 from tasks.display import show_tasks, filter_tasks
 from tasks.operations import (
@@ -14,7 +15,7 @@ def show_menu():
     """
     چاپ منوی اصلی در ترمینال برای نمایش گزینه‌های مدیریت تسک‌ها.
     """
-    print("\nToDoCraft")
+    print(f"\nToDoCraft - نسخه {__version__}")
     print("منوی اصلی")
     print("1. افزودن تسک جدید")
     print("2. ویرایش تسک")
