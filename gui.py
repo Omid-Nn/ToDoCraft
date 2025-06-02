@@ -3,6 +3,9 @@ from tkinter import ttk, messagebox
 from tasks.storage import load_tasks, save_tasks
 from datetime import datetime
 
+def normalize_persian(text):
+    return text.strip().replace('ي', 'ی').replace('ك', 'ک').replace('‌', ' ').lower()
+
 def open_add_task_window():
     add_win = tk.Toplevel()
     add_win.title("افزودن تسک جدید")
@@ -18,6 +21,20 @@ def open_add_task_window():
             ttk.Label(add_win, text="عنوان تسک نمی‌تواند خالی باشد", foreground="red").pack()
             return
         tasks = load_tasks()
+
+        normalized_title = normalize_persian(title)
+        for task in tasks:
+            existing_title = normalize_persian(task['title'])
+            if normalized_title == existing_title:
+                answer = messagebox.askyesno(
+                    "تسک تکراری",
+                    "این تسک قبلاً وجود دارد. آیا می‌خواهید آن را دوباره اضافه کنید؟",
+                    parent=add_win
+                )
+                if not answer:
+                    return
+                break
+
         tasks.append({
             "title": title,
             "completed": False,
@@ -37,24 +54,24 @@ def open_task_list_window():
 
     columns = ("created_at", "status", "title")
     tree = ttk.Treeview(list_win, columns=columns, show='headings')
-    tree.heading("title", text="عنوان تسک")
-    tree.heading("status", text="وضعیت")
-    tree.heading("created_at", text="تاریخ ایجاد")
+
+    sort_order = {"title": False, "status": False, "created_at": False}
+
+    tree.heading("title", text="عنوان تسک", command=lambda: sort_column("title"))
+    tree.heading("status", text="وضعیت", command=lambda: sort_column("status"))
+    tree.heading("created_at", text="تاریخ ایجاد", command=lambda: sort_column("created_at"))
 
     tree.column("title", width=250, anchor="center")
     tree.column("status", width=50, anchor="center")
     tree.column("created_at", width=100, anchor="center")
-    
+
     search_frame = ttk.Frame(list_win)
     search_frame.pack(pady=5)
-    
+
     ttk.Label(search_frame, text="جستجو براساس عنوان").pack(side='right')
     search_entry = ttk.Entry(search_frame, width=30, justify="center")
     search_entry.pack(side='right', padx=5)
-    
-    def normalize_persian(text):
-        return text.strip().replace('ي', 'ی').replace('ك', 'ک').replace('‌', ' ').lower()
-    
+
     def search_tasks():
         keyword = normalize_persian(search_entry.get())
         tree.delete(*tree.get_children())
@@ -63,17 +80,18 @@ def open_task_list_window():
             if keyword in title_normalized:
                 status = "✅" if task['completed'] else "⏳"
                 tree.insert("", "end", values=(task['created_at'], status, task['title']))
-    
+    list_win.bind("<Return>", lambda event=None: search_tasks())
+
     def refresh_tree():
         tasks[:] = load_tasks()
         tree.delete(*tree.get_children())
         for task in tasks:
             status = "✅" if task['completed'] else "⏳"
             tree.insert("", "end", values=(task['created_at'], status, task['title']))
-    
+
     ttk.Button(search_frame, text=" جستجو", command=search_tasks).pack(side="left")
     ttk.Button(search_frame, text="نمایش همه", command=refresh_tree).pack(side="left", padx=5)
-    
+
     tree.pack(expand=True, fill='both', padx=10, pady=10)
 
     vsb = ttk.Scrollbar(tree, orient="vertical", command=tree.yview)
@@ -87,6 +105,16 @@ def open_task_list_window():
     tree.bind("<Button-1>", clear_selection, add="+")
 
     refresh_tree()
+
+    def sort_column(col):
+        reverse = sort_order[col]
+        sorted_tasks = sorted(tasks, key=lambda x: x[col] if col != "status" else not x['completed'], reverse=reverse)
+        sort_order[col] = not reverse
+
+        tree.delete(*tree.get_children())
+        for task in sorted_tasks:
+            status = "✅" if task['completed'] else "⏳"
+            tree.insert("", "end", values=(task['created_at'], status, task['title']))
 
     button_frame = ttk.Frame(list_win)
     button_frame.pack(pady=10)
@@ -135,12 +163,12 @@ def open_task_list_window():
             edit_win = tk.Toplevel(list_win)
             edit_win.title("ویرایش تسک")
             edit_win.geometry("400x150")
-            
+
             ttk.Label(edit_win, text="عنوان جدید تسک").pack(pady=10)
             new_title_entry = ttk.Entry(edit_win, width=50, justify="center")
             new_title_entry.insert(0, tasks[index]['title'])
             new_title_entry.pack()
-            
+
             def save_edit():
                 new_title = new_title_entry.get().strip()
                 if not new_title:
@@ -171,9 +199,9 @@ def main():
     button_frame = ttk.Frame(root)
     button_frame.pack(pady=10)
 
-    ttk.Button(button_frame, text="افزودن تسک جدید", width=20, command=open_add_task_window).grid(row=0, column=0, padx=10, pady=10)
-    ttk.Button(button_frame, text="نمایش تسک‌ها", width=20, command=open_task_list_window).grid(row=0, column=1, padx=10, pady=10)
-    ttk.Button(button_frame, text="خروج", width=20, command=root.quit).grid(row=2, column=0, columnspan=3, pady=10)
+    ttk.Button(button_frame, text="افزودن تسک جدید", width=25, command=open_add_task_window).grid(row=0, column=0, padx=10, pady=10)
+    ttk.Button(button_frame, text="نمایش تسک‌ها", width=25, command=open_task_list_window).grid(row=0, column=1, padx=10, pady=10)
+    ttk.Button(button_frame, text="خروج", width=25, command=root.quit).grid(row=2, column=0, columnspan=3, pady=10)
 
     root.mainloop()
 
