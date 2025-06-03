@@ -14,10 +14,23 @@ def load_tasks():
     Returns:
         list: لیستی از دیکشنری‌های تسک. اگر فایل وجود نداشته باشد، لیست خالی بازگردانده می‌شود.
     """
-    if not os.path.exists(TASKS_FILE):
+    try:
+        if not os.path.exists(TASKS_FILE):
+            return []
+        with open(TASKS_FILE, 'r', encoding='utf-8') as file:
+            tasks = json.load(file)
+            if not isinstance(tasks, list):
+                print(f"Warning: {TASKS_FILE} content is not a list. Starting with an empty tasks list.")
+                return []
+            return tasks
+    except FileNotFoundError:
         return []
-    with open(TASKS_FILE, 'r', encoding='utf-8') as file:
-        return json.load(file)
+    except json.JSONDecodeError:
+        print(f"Warning: {TASKS_FILE} is crorpted or invalid. Starting with an empty tasks list.")
+        return []
+    except Exception as e:
+        print(f"An unexpected error occurred while loading tasks: {e}. Starting with an empty tasks list.")
+        return []
 
 def save_tasks(tasks):
     """
