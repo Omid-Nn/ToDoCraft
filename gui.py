@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-from datetime import datetime
 import uuid
+import jdatetime
 from tasks.storage import load_tasks, save_tasks
 
 def normalize_persian(text):
@@ -43,7 +43,7 @@ def open_add_task_window(refresh_callback=None):
             "id": str(uuid.uuid4()),
             "title": title,
             "completed": False,
-            "created_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            "created_at": jdatetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         })
         save_tasks(tasks)
         add_win.destroy()
@@ -73,7 +73,7 @@ def open_task_list_window():
 
     tree.heading("title", text="عنوان تسک", command=lambda: sort_column("title"))
     tree.heading("status", text="وضعیت", command=lambda: sort_column("status"))
-    tree.heading("created_at", text="تاریخ ایجاد", command=lambda: sort_column("created_at"))
+    tree.heading("created_at", text="زمان ایجاد", command=lambda: sort_column("created_at"))
 
     tree.column("title", width=250, anchor="center")
     tree.column("status", width=50, anchor="center")

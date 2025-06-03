@@ -1,8 +1,7 @@
 """
 این ماژول شامل توابعی برای افزودن، ویرایش، حذف و تیک‌زدن تسک‌ها است.
 """
-
-from datetime import datetime
+import jdatetime
 from .storage import load_tasks, save_tasks
 from .display import show_tasks
 
@@ -12,7 +11,7 @@ def add_task():
     تسک جدید به فایل JSON اضافه می‌شود.
     """
     title = input("عنوان تسک را وارد کنید: ")
-    created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    created_at = jdatetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     task = load_tasks()
     task.append({
         "title": title,
