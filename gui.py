@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 import uuid
 import jdatetime
-from tasks.storage import load_tasks, save_tasks
+from tasks.gui_storage import load_tasks, save_tasks
 
 def normalize_persian(text):
     return text.strip().replace('ي', 'ی').replace('ك', 'ک').replace('‌', ' ').lower()

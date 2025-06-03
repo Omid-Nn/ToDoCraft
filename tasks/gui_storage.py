@@ -1,15 +1,15 @@
 """
-این ماژول مسئول خواندن و نوشتن لیست تسک‌ها از/به فایل tasks.json است.
+این ماژول مسئول خواندن و نوشتن لیست تسک‌ها از/به فایل gui_tasks.json است.
 """
 
 import json
 import os
 
-TASKS_FILE = 'tasks.json'
+TASKS_FILE = 'gui_tasks.json'
 
 def load_tasks():
     """
-    بارگذاری تسک‌ها از فایل tasks.json.
+    بارگذاری تسک‌ها از فایل gui_tasks.json.
 
     Returns:
         list: لیستی از دیکشنری‌های تسک. اگر فایل وجود نداشته باشد، لیست خالی بازگردانده می‌شود.
@@ -34,7 +34,7 @@ def load_tasks():
 
 def save_tasks(tasks):
     """
-    ذخیره لیست تسک‌ها در فایل tasks.json.
+    ذخیره لیست تسک‌ها در فایل gui_tasks.json.
 
     Args:
         tasks (list): لیست تسک‌هایی که باید ذخیره شوند.

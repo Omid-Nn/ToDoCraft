@@ -2,7 +2,7 @@
 این ماژول شامل توابعی برای افزودن، ویرایش، حذف و تیک‌زدن تسک‌ها است.
 """
 import jdatetime
-from .storage import load_tasks, save_tasks
+from .cli_storage import load_tasks, save_tasks
 from .display import show_tasks
 
 def add_task():
