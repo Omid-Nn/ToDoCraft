@@ -4,13 +4,14 @@
 """
 __version__ = "1.0.0"
 
-from tasks.display import show_tasks, filter_tasks
-from tasks.operations import (
+from cli.cli_display import show_tasks, filter_tasks
+from cli.cli_operations import (
     add_task,
     edit_task,
     delete_task,
     mark_task_completed
 )
+
 def show_menu():
     """
     چاپ منوی اصلی در ترمینال برای نمایش گزینه‌های مدیریت تسک‌ها.

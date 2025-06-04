@@ -29,19 +29,29 @@ All tasks are stored persistently in JSON files, separately for CLI and GUI mode
 
 ```
 ToDoCraft/
-├── tasks/
-│ ├── init.py # Empty file to declare package
-│ ├── cli_storage.py # CLI-specific task storage
-│ ├── gui_storage.py # GUI-specific task storage
-│ ├── display.py # Task display and filter functions
-│ └── operations.py # Core logic for task operations
-├── cli_tasks.json # Data file for CLI mode
-├── gui_tasks.json # Data file for GUI mode
-├── gui.py # GUI application using tkinter
-├── main.py # CLI application entry point
-├── requirements.txt # List of dependencies
-├── README.md # Project documentation
-├── .gitignore # Git ignore file
+ToDoCraft/
+├── cli/                                # Modules for the Command-Line Interface (CLI) version
+│   ├── __init__.py                     # Package initialization file
+│   ├── cli_display.py                  # Functions for displaying and filtering tasks for CLI
+│   ├── cli_main.py                     # Main entry point for the CLI version
+│   └── cli_operations.py               # Task operation logic for CLI (add, edit, delete, complete)
+├── gui/                                # Modules for the Graphical User Interface (GUI) version
+│   ├── __init__.py                     # Package initialization file
+│   ├── gui_add.py                      # Logic for adding tasks in GUI
+│   ├── gui_list.py                     # Logic for displaying and managing the task list in GUI
+│   ├── gui_main.py                     # Main entry point for the GUI version
+│   └── gui_utils.py                    # Utility functions for GUI (Persian normalization)
+├── storage/                            # Modules for data storage management
+│   ├── __init__.py                     # Package initialization file
+│   ├── cli_storage.py                  # Load/save functions for CLI data (cli_tasks.json)
+│   └── gui_storage.py                  # Load/save functions for GUI data (gui_tasks.json)
+├── venv/                               # Python virtual environment folder (recommended, ignored by Git)
+├── .gitignore                          # Specifies intentionally untracked files to ignore
+├── cli_tasks.json                      # JSON file for storing CLI tasks data (auto-generated)
+├── gui_tasks.json                      # JSON file for storing GUI tasks data (auto-generated)
+├── README_PER.md                       # README file in Persian
+├── README.md                           # README file in English
+└── requirements.txt                    # List of required Python libraries for the project
 ```
 
 ---
@@ -52,14 +62,14 @@ ToDoCraft/
 
 ```bash
 cd ToDoCraft
-python main.py
+python -m cli.cli_main
 ```
 
 ### GUI Mode:
 
 ```bash
 cd ToDoCraft
-python gui.py
+python -m gui.gui_main
 ```
 
 ---

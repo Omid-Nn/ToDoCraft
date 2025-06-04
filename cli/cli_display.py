@@ -2,7 +2,7 @@
 این ماژول مسئول چاپ لیست تسک‌ها به صورت کامل یا فیلترشده در ترمینال است.
 """
 
-from .cli_storage import load_tasks
+from storage.cli_storage import load_tasks
 
 def show_tasks():
     """

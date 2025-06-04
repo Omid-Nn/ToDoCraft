@@ -29,19 +29,28 @@
 
 ```
 ToDoCraft/
-├── tasks/
-│ ├── init.py # فایل خالی برای شناسایی پکیج
-│ ├── cli_storage.py # ذخیره‌سازی تسک‌ها برای حالت CLI
-│ ├── gui_storage.py # ذخیره‌سازی تسک‌ها برای حالت GUI
-│ ├── display.py # توابع نمایش و فیلتر تسک‌ها
-│ └── operations.py # منطق افزودن، ویرایش، حذف و تکمیل تسک‌ها
-├── cli_tasks.json # دیتای مربوط به حالت CLI
-├── gui_tasks.json # دیتای مربوط به حالت GUI
-├── gui.py # برنامه رابط گرافیکی با tkinter
-├── main.py # رابط خط فرمان (ورودی اصلی)
-├── requirements.txt # فایل نیازمندی‌ها
-├── README.md # مستندات پروژه
-├── .gitignore # فایل گیت‌ایگنور
+├── cli/                                # ماژول‌های مربوط به نسخه خط فرمان (CLI)
+│   ├── __init__.py                     # فایل اولیه پکیج
+│   ├── cli_display.py                  # توابع نمایش و فیلتر تسک‌ها برای CLI
+│   ├── cli_main.py                     # نقطه ورود اصلی نسخه CLI
+│   └── cli_operations.py               # منطق عملیات تسک‌ها برای CLI (افزودن، ویرایش، حذف، تکمیل)
+├── gui/                                # ماژول‌های مربوط به رابط کاربری گرافیکی (GUI)
+│   ├── __init__.py                     # فایل اولیه پکیج
+│   ├── gui_add.py                      # منطق افزودن تسک در GUI
+│   ├── gui_list.py                     # منطق نمایش و مدیریت لیست تسک‌ها در GUI
+│   ├── gui_main.py                     # نقطه ورود اصلی نسخه GUI
+│   └── gui_utils.py                    # توابع کمکی برای GUI (نرمال‌سازی فارسی)
+├── storage/                            # ماژول‌های مدیریت ذخیره‌سازی داده‌ها
+│   ├── __init__.py                     # فایل اولیه پکیج
+│   ├── cli_storage.py                  # توابع بارگذاری/ذخیره برای داده‌های CLI (cli_tasks.json)
+│   └── gui_storage.py                  # توابع بارگذاری/ذخیره برای داده‌های GUI (gui_tasks.json)
+├── venv/                               # پوشه محیط مجازی پایتون (توصیه شده، توسط گیت نادیده گرفته می‌شود)
+├── .gitignore                          # فایل‌ها و پوشه‌هایی که Git باید نادیده بگیرد
+├── cli_tasks.json                      # فایل JSON برای ذخیره‌سازی تسک‌های نسخه CLI (تولید خودکار)
+├── gui_tasks.json                      # فایل JSON برای ذخیره‌سازی تسک‌های نسخه GUI (تولید خودکار)
+├── README_PER.md                       # فایل توضیحات README به زبان فارسی
+├── README.md                           # فایل توضیحات README به زبان انگلیسی
+└── requirements.txt                    # لیست کتابخانه‌های پایتون مورد نیاز پروژه
 ```
 
 ---
@@ -52,14 +61,14 @@ ToDoCraft/
 
 ```bash
 cd ToDoCraft
-python main.py
+python -m cli.cli_main
 ```
 
 ### اجرای حالت GUI:
 
 ```bash
 cd ToDoCraft
-python gui.py
+python -m gui.gui_main
 ```
 
 ---
