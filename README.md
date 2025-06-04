@@ -1,21 +1,27 @@
 # ToDoCraft
 
-ToDoCraft is a simple and practical command-line To-Do list manager written in Python.  
-It allows users to add, view, edit, complete, filter, and delete tasks. All tasks are stored in a JSON file for persistence.
+ToDoCraft is a modular and user-friendly To-Do list manager written in Python.  
+It offers both **Command-Line Interface (CLI)** and **Graphical User Interface (GUI)** built with `tkinter`.
+
+Users can add, view, edit, search, filter, complete, and delete tasks.    
+All tasks are stored persistently in JSON files, separately for CLI and GUI modes.
 
 ---
 
 ## Features
 
-| Feature             | Description                                  |
-|---------------------|----------------------------------------------|
-| Add Task            | Create a new task with a title and timestamp |
-| View Tasks          | List all tasks with their status and creation time |
-| Edit Task           | Modify the title of an existing task         |
-| Filter Tasks        | Show only completed or incomplete tasks      |
-| Complete Task       | Mark a task as completed                     |
-| Delete Task         | Remove a task from the list                  |
-| JSON Storage        | Tasks are saved to `tasks.json` persistently |
+| Feature             | Description                                                       |
+|---------------------|-------------------------------------------------------------------|
+| Add Task            | Create a new task with a title and timestamp                      |
+| View Tasks          | List all tasks with their status and creation time                |
+| Edit Task           | Modify the title of an existing task                              |
+| Search Task         | Find tasks by matching keywords in their titles 
+| Filter Tasks        | Show only completed or incomplete tasks                           |
+| Complete Task       | Mark a task as completed                                          |
+| Delete Task         | Remove a task from the list                                       |
+| GUI Mode            | Interact with tasks via a graphical interface (tkinter)           |
+| CLI Mode            | Use the terminal to manage tasks                                  |
+| JSON Storage        | CLI and GUI use separate JSON files (`cli_tasks.json`, `gui_tasks.json`) |
 
 ---
 
@@ -23,59 +29,68 @@ It allows users to add, view, edit, complete, filter, and delete tasks. All task
 
 ```
 ToDoCraft/
-├── main.py                  # Entry point of the application
 ├── tasks/
-│   ├── __init__.py         # Empty init file to define package
-│   ├── storage.py          # Handles loading/saving tasks from/to JSON
-│   ├── operations.py       # Task logic: add/edit/delete/complete
-│   └── display.py          # Display and filter task functions
-├── tasks.json              # Data file (created automatically)
+│ ├── init.py # Empty file to declare package
+│ ├── cli_storage.py # CLI-specific task storage
+│ ├── gui_storage.py # GUI-specific task storage
+│ ├── display.py # Task display and filter functions
+│ └── operations.py # Core logic for task operations
+├── cli_tasks.json # Data file for CLI mode
+├── gui_tasks.json # Data file for GUI mode
+├── gui.py # GUI application using tkinter
+├── main.py # CLI application entry point
+├── requirements.txt # List of dependencies
+├── README.md # Project documentation
+├── .gitignore # Git ignore file
 ```
 
 ---
 
 ## How to Run
 
-1. Navigate to the project directory:
+### CLI Mode:
+
 ```bash
 cd ToDoCraft
+python main.py
 ```
 
-2. Run the application:
+### GUI Mode:
+
 ```bash
-python main.py
+cd ToDoCraft
+python gui.py
 ```
 
 ---
 
 ## Requirements
 
-No external dependencies are required.  
-Compatible with Python **3.8+**
+- Python **3.8+**
+- Required libraries:
+    jalali_core==1.0.0
+    jdatetime==5.2.0
+
+    Install dependencies with:
+        pip install -r requirements.txt
 
 ---
 
-## Development Guidelines
+## Possible Future Features
 
-The code is modular and easy to extend.  
-You can add new features like:
-
-- Task search
-- Exporting to CSV or PDF
-- GUI using tkinter or textual
-- Due dates and reminders
-- Cloud storage integration
+- Task reminders
+- Build an installable version (e.g. using PyInstaller)
 
 ---
 
 ## Security Note
 
-The `tasks.json` file stores all user data.  
-Avoid manually modifying or deleting this file to prevent data loss.
+Each mode (CLI / GUI) stores data in separate JSON files.  
+Avoid editing them manually to prevent data corruption.
 
 ---
 
 ## Author
 
-Developed by Omid Nourinia
+Developed with by **Omid Nourinia**  
 Email: omid.nourinia.971202@gmail.com
