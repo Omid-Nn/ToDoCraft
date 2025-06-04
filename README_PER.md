@@ -68,11 +68,13 @@ python gui.py
 
 - پایتون نسخه **۳.۸ یا بالاتر**
 - کتابخانه‌های موردنیاز:
-    jalali_core==1.0.0
-    jdatetime==5.2.0
+jalali_core==1.0.0,
+jdatetime==5.2.0
     
-    نحوه نصب پیش نیاز ها:
-        pip install -r requirements.txt
+نحوه نصب پیش نیاز ها:
+```bash
+pip install -r requirements.txt
+```
 
 ---
 

@@ -68,11 +68,13 @@ python gui.py
 
 - Python **3.8+**
 - Required libraries:
-    jalali_core==1.0.0
-    jdatetime==5.2.0
+jalali_core==1.0.0,
+jdatetime==5.2.0
 
-    Install dependencies with:
-        pip install -r requirements.txt
+Install dependencies with:
+```bash
+pip install -r requirements.txt
+```
 
 ---
 
